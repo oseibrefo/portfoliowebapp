@@ -1,5 +1,6 @@
-#Portfolio Exercise by Emmanuel Osei-Brefo
-#March 2024
+
+'''Portfolio Exercise by Emmanuel Osei-Brefo
+              March 2024             '''
 
 import streamlit as st
 import numpy as np
