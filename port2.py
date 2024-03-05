@@ -1,8 +1,8 @@
+#Portfolio Exercise by Emmanuel Osei-Brefo
+#March 2024
+
 import streamlit as st
-import yfinance as yf
-import pandas as pd
 import numpy as np
-import statsmodels.api as sm
 from statsmodels.tsa.arima.model import ARIMA
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
 from sklearn.metrics import mean_squared_error
@@ -14,7 +14,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from fredapi import Fred
 import pandas as pd
-from scipy.stats import boxcox
+
 
 
 # Download historical data
@@ -42,7 +42,7 @@ def download_data(start_date, end_date ):
     data = pd.merge(s500_df, gs1m_df,  how='inner', left_index=True, right_index=True)
     return(data)
 
-
+#Load RAW Data
 def load_data(uploaded_file):
     if uploaded_file is not None:
         df = pd.read_csv(uploaded_file)
@@ -67,16 +67,7 @@ def load_and_clean_data(uploaded_file):
         return None
 
 
-#Clean the data
-# Drop the unnamed columns
-def CleanData(D):
-    data_cleaned = D.dropna(how='all')
-    # Drop columns where all cells are NaN
-    data = data_cleaned.dropna(axis='columns', how='all')
-    #data_cleaned['Date'] = pd.to_datetime(data_cleaned['Date'], errors='coerce')
-    #data = data_cleaned.dropna(subset=['Date'])
-    #data= data_cleaned.drop(columns=['Unnamed: 3', 'Unnamed: 4'], errors='ignore')
-    return data
+
 
 
 
@@ -143,7 +134,6 @@ def ml_forecast(data):
 
     # The best model is used to forecast the next return value
     er_forecast_ml = best_model.predict([[len(data)]]).item()
-    #er_forecast_ml = best_model.predict(y_val)
     var_forecast_ml = best_model_score
 
     return er_forecast_ml, var_forecast_ml, best_model_name
@@ -204,7 +194,7 @@ def calculate_and_evaluate(data, gamma, in_sample_years, forecast_method):
 # Streamlit User Interface Development
 
 def main():
-    st.title("Small scale Portfolio Optimisation Tool")
+    st.title("Portfolio Optimisation Tool")
 
     data_source = st.radio('Select data source', ('Upload CSV', 'FRED API'))
 
@@ -222,7 +212,7 @@ def main():
 
     else:
         st.subheader('Enter details to fetch the data using FRED API ')
-        #tickers_list = ['^GSPC', '^IRS'] # tickers.split()
+
         start_date, end_date = st.date_input("Select the date range for the data:",
                                          value=[pd.to_datetime('2014-01-01'), pd.to_datetime('2023-12-01')],
                                          min_value=pd.to_datetime('2000-01-01'), max_value=pd.to_datetime('2023-12-01'))
